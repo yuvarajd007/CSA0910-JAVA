@@ -1,0 +1,46 @@
+import java.util.Scanner;
+
+class ParkingTicket {
+    private final int ticketNo;
+    private final String regNo;
+
+    ParkingTicket() {
+        this(1, "UNKNOWN");
+    }
+
+    ParkingTicket(int ticketNo, String regNo) {
+        this.ticketNo = ticketNo;
+        this.regNo = regNo;
+    }
+
+    ParkingTicket(ParkingTicket other) {
+        this(other.ticketNo, other.regNo);
+    }
+
+    void display() {
+        System.out.println("Ticket: " + ticketNo
+                + ", Registration: " + regNo);
+    }
+}
+
+public class Task04 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter ticket number: ");
+        int number = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter registration number: ");
+        String reg = sc.nextLine();
+
+        ParkingTicket t1 = new ParkingTicket(number, reg);
+        ParkingTicket t2 = new ParkingTicket(t1);
+
+        t1.display();
+        System.out.println("Copied ticket:");
+        t2.display();
+
+        sc.close();
+    }
+}
