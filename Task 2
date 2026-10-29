@@ -1,0 +1,34 @@
+import java.util.Scanner;
+
+public class Task02 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of floors: ");
+        int floors = sc.nextInt();
+
+        System.out.print("Enter slots per floor: ");
+        int slots = sc.nextInt();
+
+        int[][] parking = new int[floors][slots];
+
+        System.out.println("Parking structure:");
+        for (int i = 0; i < floors; i++) {
+            for (int j = 0; j < slots; j++) {
+                System.out.print(parking[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.print("Enter parking duration in minutes: ");
+        int minutes = sc.nextInt();
+
+        int hours = (minutes + 59) / 60;
+        double fee = hours * 30.0;
+
+        System.out.println("Parking hours: " + hours);
+        System.out.println("Parking fee: Rs. " + fee);
+
+        sc.close();
+    }
+}
