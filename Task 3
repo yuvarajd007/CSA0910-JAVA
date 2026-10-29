@@ -1,0 +1,54 @@
+import java.util.Arrays;
+
+class ParkingFacility {
+    private String[][] slots;
+
+    ParkingFacility(int floors, int slotsPerFloor) {
+        slots = new String[floors][slotsPerFloor];
+    }
+
+    int[] allocate(String vehicleNo) {
+        for (int i = 0; i < slots.length; i++) {
+            for (int j = 0; j < slots[i].length; j++) {
+                if (slots[i][j] == null) {
+                    slots[i][j] = vehicleNo;
+                    return new int[]{i, j};
+                }
+            }
+        }
+        return null;
+    }
+
+    boolean release(String vehicleNo) {
+        for (int i = 0; i < slots.length; i++) {
+            for (int j = 0; j < slots[i].length; j++) {
+                if (vehicleNo.equals(slots[i][j])) {
+                    slots[i][j] = null;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    void display() {
+        for (String[] floor : slots) {
+            System.out.println(Arrays.toString(floor));
+        }
+    }
+}
+
+public class ParkingFacilityDemo {
+    public static void main(String[] args) {
+        ParkingFacility p = new ParkingFacility(2, 2);
+
+        int[] a = p.allocate("TN01");
+        int[] b = p.allocate("TN02");
+
+        System.out.println(Arrays.toString(a));
+        System.out.println(Arrays.toString(b));
+
+        System.out.println(p.release("TN01"));
+        p.display();
+    }
+}
