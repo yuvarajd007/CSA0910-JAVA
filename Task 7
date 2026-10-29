@@ -1,0 +1,78 @@
+import java.util.Scanner;
+
+abstract class Vehicle {
+    private final String regNo;
+
+    Vehicle(String regNo) {
+        this.regNo = regNo;
+    }
+
+    public String getRegNo() {
+        return regNo;
+    }
+
+    abstract double calculateFee(int hours);
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Vehicle &&
+                regNo.equals(((Vehicle) obj).regNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return regNo.hashCode();
+    }
+}
+
+class TwoWheeler extends Vehicle {
+    TwoWheeler(String regNo) {
+        super(regNo);
+    }
+
+    @Override
+    double calculateFee(int hours) {
+        return hours * 10.0;
+    }
+}
+
+class Car extends Vehicle {
+    Car(String regNo) {
+        super(regNo);
+    }
+
+    @Override
+    double calculateFee(int hours) {
+        return hours * 30.0;
+    }
+}
+
+public class Task07 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter registration number: ");
+        String reg = sc.nextLine();
+
+        System.out.print("Enter vehicle type (bike/car): ");
+        String type = sc.nextLine();
+
+        System.out.print("Enter parking hours: ");
+        int hours = sc.nextInt();
+
+        Vehicle v;
+
+        if (type.equalsIgnoreCase("bike")) {
+            v = new TwoWheeler(reg);
+        } else {
+            v = new Car(reg);
+        }
+
+        System.out.println("Fee: Rs " + v.calculateFee(hours));
+
+        System.out.println("Same registration objects are equal: "
+                + v.equals(new Car(reg)));
+
+        sc.close();
+    }
+}
