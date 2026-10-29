@@ -1,0 +1,38 @@
+import java.util.Scanner;
+
+class BaseVehicle {
+    protected String regNo;
+
+    BaseVehicle(String regNo) {
+        this.regNo = regNo;
+        System.out.println("Vehicle constructor");
+    }
+}
+
+class BaseCar extends BaseVehicle {
+    BaseCar(String regNo) {
+        super(regNo);
+        System.out.println("Car constructor");
+    }
+}
+
+class ElectricCar extends BaseCar {
+    ElectricCar(String regNo) {
+        super(regNo);
+        System.out.println("ElectricCar constructor");
+    }
+}
+
+public class Task06 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter electric car registration: ");
+        String reg = sc.nextLine();
+
+        ElectricCar car = new ElectricCar(reg);
+        System.out.println("Created electric car: " + car.regNo);
+
+        sc.close();
+    }
+}
