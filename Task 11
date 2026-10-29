@@ -1,0 +1,168 @@
+import java.util.*;
+
+abstract class Vehicle {
+    private final String regNo;
+
+    Vehicle(String regNo) {
+        if (regNo == null || regNo.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Registration is required");
+        }
+
+        this.regNo = regNo;
+    }
+
+    public String getRegNo() {
+        return regNo;
+    }
+
+    abstract double ratePerHour();
+}
+
+class Bike extends Vehicle {
+    Bike(String regNo) {
+        super(regNo);
+    }
+
+    double ratePerHour() {
+        return 10;
+    }
+}
+
+class Car extends Vehicle {
+    Car(String regNo) {
+        super(regNo);
+    }
+
+    double ratePerHour() {
+        return 30;
+    }
+}
+
+class ElectricCar extends Car {
+    ElectricCar(String regNo) {
+        super(regNo);
+    }
+}
+
+class ParkingTicket {
+    static int nextId = 1;
+
+    int id;
+    Vehicle vehicle;
+    int floor, slot;
+    long entryTime;
+
+    ParkingTicket(Vehicle vehicle, int floor, int slot) {
+        this.id = nextId++;
+        this.vehicle = vehicle;
+        this.floor = floor;
+        this.slot = slot;
+        this.entryTime = System.currentTimeMillis();
+    }
+}
+
+public class Task11 {
+    private final String[][] slots;
+    private final Map<String, ParkingTicket> active =
+            new HashMap<>();
+
+    Task11(int[] capacity) {
+        slots = new String[capacity.length][];
+
+        for (int i = 0; i < capacity.length; i++) {
+            slots[i] = new String[capacity[i]];
+        }
+    }
+
+    void enter(Vehicle v) {
+        if (active.containsKey(v.getRegNo())) {
+            System.out.println("Error: vehicle already parked");
+            return;
+        }
+
+        for (int f = 0; f < slots.length; f++) {
+            for (int s = 0; s < slots[f].length; s++) {
+                if (slots[f][s] == null) {
+                    slots[f][s] = v.getRegNo();
+
+                    ParkingTicket t =
+                            new ParkingTicket(v, f, s);
+
+                    active.put(v.getRegNo(), t);
+
+                    System.out.println("Ticket " + t.id
+                            + ": " + v.getRegNo()
+                            + " parked at floor " + f
+                            + ", slot " + s);
+                    return;
+                }
+            }
+        }
+
+        System.out.println("Parking full");
+    }
+
+    void exit(String regNo, int minutes) {
+        ParkingTicket t = active.remove(regNo);
+
+        if (t == null) {
+            System.out.println("Error: vehicle not found");
+            return;
+        }
+
+        slots[t.floor][t.slot] = null;
+
+        int hours = (minutes + 59) / 60;
+        double fee = hours * t.vehicle.ratePerHour();
+
+        System.out.println("Vehicle " + regNo
+                + " exited. Fee: Rs " + fee);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Task11 p = new Task11(new int[]{2, 2});
+
+        System.out.println(
+                "1. Bike entry  2. Car entry  3. Exit  4. Quit");
+
+        while (true) {
+            System.out.print("Choose: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            if (choice == 1 || choice == 2) {
+                System.out.print("Registration: ");
+                String reg = sc.nextLine();
+
+                if (choice == 1) {
+                    p.enter(new Bike(reg));
+                } else {
+                    p.enter(new Car(reg));
+                }
+
+            } else if (choice == 3) {
+                System.out.print("Registration: ");
+                String reg = sc.nextLine();
+
+                System.out.print("Parking minutes: ");
+                int mins = sc.nextInt();
+                sc.nextLine();
+
+                if (mins < 0) {
+                    System.out.println("Invalid duration");
+                } else {
+                    p.exit(reg, mins);
+                }
+
+            } else if (choice == 4) {
+                break;
+            } else {
+                System.out.println("Invalid choice");
+            }
+        }
+
+        sc.close();
+    }
+}
