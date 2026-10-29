@@ -1,0 +1,57 @@
+import java.util.Scanner;
+
+interface Chargeable {
+    double chargingFee(int kWh);
+}
+
+abstract class Vehicle {
+    protected String regNo;
+
+    Vehicle(String regNo) {
+        this.regNo = regNo;
+    }
+
+    abstract double parkingFee(int hours);
+}
+
+class ElectricCar extends Vehicle implements Chargeable {
+    ElectricCar(String regNo) {
+        super(regNo);
+    }
+
+    @Override
+    double parkingFee(int hours) {
+        return hours * 30.0;
+    }
+
+    @Override
+    public double chargingFee(int kWh) {
+        return kWh * 12.0;
+    }
+}
+
+public class Task09 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter registration number: ");
+        String reg = sc.nextLine();
+
+        System.out.print("Enter parking hours: ");
+        int hours = sc.nextInt();
+
+        System.out.print("Enter charging units (kWh): ");
+        int kWh = sc.nextInt();
+
+        ElectricCar car = new ElectricCar(reg);
+
+        double parking = car.parkingFee(hours);
+        double charging = car.chargingFee(kWh);
+
+        System.out.println("Parking fee: Rs " + parking);
+        System.out.println("Charging fee: Rs " + charging);
+        System.out.println("Total fee: Rs " + (parking + charging));
+
+        sc.close();
+    }
+}
