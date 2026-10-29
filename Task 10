@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+class ParkingSlot {
+    private int slotNumber;
+    private String vehicleNo;
+
+    ParkingSlot(int slotNumber) {
+        setSlotNumber(slotNumber);
+        vehicleNo = "";
+    }
+
+    public int getSlotNumber() {
+        return slotNumber;
+    }
+
+    public String getVehicleNo() {
+        return vehicleNo;
+    }
+
+    public void setSlotNumber(int slotNumber) {
+        if (slotNumber <= 0) {
+            throw new IllegalArgumentException(
+                    "Slot must be positive");
+        }
+
+        this.slotNumber = slotNumber;
+    }
+
+    public void park(String regNo) {
+        if (regNo == null || regNo.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Registration cannot be empty");
+        }
+
+        if (!vehicleNo.isEmpty()) {
+            throw new IllegalStateException(
+                    "Slot is already occupied");
+        }
+
+        vehicleNo = regNo;
+    }
+}
+
+public class Task10 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter positive slot number: ");
+        int number = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter vehicle registration: ");
+        String reg = sc.nextLine();
+
+        try {
+            ParkingSlot slot = new ParkingSlot(number);
+            slot.park(reg);
+
+            System.out.println("Slot: " + slot.getSlotNumber());
+            System.out.println("Vehicle: " + slot.getVehicleNo());
+        } catch (RuntimeException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        sc.close();
+    }
+}
