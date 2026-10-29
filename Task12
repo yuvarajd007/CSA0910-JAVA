@@ -1,0 +1,148 @@
+import java.util.Scanner;
+
+interface PassHolder {
+    boolean hasValidPass();
+}
+
+abstract class Vehicle {
+    protected final String regNo;
+
+    Vehicle(String regNo) {
+        this.regNo = regNo;
+    }
+
+    public String getRegNo() {
+        return regNo;
+    }
+
+    abstract double ratePerHour();
+}
+
+class Bike extends Vehicle {
+    Bike(String regNo) {
+        super(regNo);
+    }
+
+    double ratePerHour() {
+        return 10;
+    }
+}
+
+class Car extends Vehicle {
+    Car(String regNo) {
+        super(regNo);
+    }
+
+    double ratePerHour() {
+        return 30;
+    }
+}
+
+class ElectricCar extends Car {
+    ElectricCar(String regNo) {
+        super(regNo);
+    }
+}
+
+class EBike extends Vehicle {
+    EBike(String regNo) {
+        super(regNo);
+    }
+
+    double ratePerHour() {
+        return 5;
+    }
+}
+
+class DeliveryVan extends Vehicle {
+    DeliveryVan(String regNo) {
+        super(regNo);
+    }
+
+    double ratePerHour() {
+        return 60;
+    }
+}
+
+class VisitorPass implements PassHolder {
+    private final boolean valid;
+
+    VisitorPass(boolean valid) {
+        this.valid = valid;
+    }
+
+    public boolean hasValidPass() {
+        return valid;
+    }
+}
+
+public class Task12 {
+    static double calculateFee(
+            Vehicle v, int minutes, boolean oneDayPass) {
+
+        if (oneDayPass) {
+            return 0;
+        }
+
+        int hours = (minutes + 59) / 60;
+        return hours * v.ratePerHour();
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println(
+            "Vehicle type: 1-Bike 2-Car 3-ElectricCar " +
+            "4-EBike 5-DeliveryVan"
+        );
+
+        System.out.print("Choose type: ");
+        int type = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Registration number: ");
+        String reg = sc.nextLine();
+
+        System.out.print("Parking duration in minutes: ");
+        int minutes = sc.nextInt();
+
+        System.out.print("Visitor one-day pass? (true/false): ");
+        boolean pass = sc.nextBoolean();
+
+        Vehicle v;
+
+        switch (type) {
+            case 1:
+                v = new Bike(reg);
+                break;
+            case 2:
+                v = new Car(reg);
+                break;
+            case 3:
+                v = new ElectricCar(reg);
+                break;
+            case 4:
+                v = new EBike(reg);
+                break;
+            case 5:
+                v = new DeliveryVan(reg);
+                break;
+            default:
+                System.out.println("Unknown vehicle type");
+                sc.close();
+                return;
+        }
+
+        if (minutes < 0) {
+            System.out.println("Duration cannot be negative");
+        } else {
+            System.out.println("Vehicle: "
+                    + v.getClass().getSimpleName());
+
+            System.out.println("Parking fee: Rs "
+                    + calculateFee(v, minutes, pass));
+        }
+
+        sc.close();
+    }
+}
