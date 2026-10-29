@@ -1,0 +1,33 @@
+import java.util.Scanner;
+
+class Vehicle {
+    String registrationNo;
+    String type;
+
+    Vehicle(String registrationNo, String type) {
+        this.registrationNo = registrationNo;
+        this.type = type;
+    }
+
+    void display() {
+        System.out.println("Registration: " + registrationNo);
+        System.out.println("Vehicle Type: " + type);
+    }
+}
+
+public class Task01 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter registration number: ");
+        String reg = sc.nextLine();
+
+        System.out.print("Enter vehicle type: ");
+        String type = sc.nextLine();
+
+        Vehicle v = new Vehicle(reg, type);
+        v.display();
+
+        sc.close();
+    }
+}
